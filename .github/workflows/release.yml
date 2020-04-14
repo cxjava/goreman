@@ -1,13 +1,14 @@
 name: release
 
-on:
-  create:
-    tags:
-      - v*.*.*
+on: 
+  watch:
+    types: [started]
+
 
 jobs:
   release:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
       -
         name: Checkout
