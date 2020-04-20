@@ -10,6 +10,14 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@master
+      - name: Check git tag exist
+        run: |
+          gitTagExists=$(git tag --points-at HEAD)
+          if ! [ -n "$gitTagExists" ]; then
+              echo "No tag, create one."
+              RELEASE_NAME=v$(date +%Y.%m%d.%H%M)
+              git tag $RELEASE_NAME
+          fi
       - name: goreleaser
         uses: docker://goreleaser/goreleaser:latest
         env:
